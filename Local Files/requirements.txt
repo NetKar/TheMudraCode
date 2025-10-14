@@ -1,0 +1,8 @@
+Flask
+gunicorn
+numpy
+opencv-python
+mediapipe
+tensorflow
+tf-keras
+flask-cors
