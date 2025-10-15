@@ -19,24 +19,42 @@ app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-try:
-    #initialize MediaPipe
-    mpHands = mp.solutions.hands
-    hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
+#initialize variables
+model = None
+hands = None
+classNames = []
+initLoaded = False
 
-    #load model
-    model = k3.models.load_model(modelPath)
+def initialize():
+    global model, hands, classNames, initLoaded
+    try:
+        #initialize MediaPipe
+        mpHands = mp.solutions.hands
+        hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 
-    #load class names
-    with open(namesPath, 'r') as f:
-        classNames = f.read().split('\n')
+        #load model
+        model = k3.models.load_model(modelPath)
 
-    #flag: successful initialization and loading
-    initLoaded = True
+        #load class names
+        with open(namesPath, 'r') as f:
+            classNames = f.read().split('\n')
 
-except Exception as e:
-    print(f"Error loading resources: {e}")
-    initLoaded = False
+        #flag: successful initialization and loading
+        initLoaded = True
+
+    except Exception as e:
+        print(f"Error loading resources: {e}")
+        initLoaded = False
+
+@app.route('/status', methods=['GET'])
+def get_status():
+    #health status of the API and model readiness
+    if not initLoaded:
+        initialize()
+    return jsonify({
+        "status": "online" if initLoaded else "initialization_failed",
+        "model_ready": initLoaded
+    })
 
 #mudra details
 
@@ -74,7 +92,9 @@ def get_mudra_details(className):
 def recognize_gesture():
     """Receives Base64 image, recognizes gesture, and returns Mudra details."""
     if not initLoaded:
-        return jsonify({"error": "Server failed to initialize and load resources."}), 503
+        initialize()
+        if not initLoaded:
+            return jsonify({"error": "Server failed to initialize and load resources."}), 503
 
     #receive and validate data from client side (Weebly JavaScript)
     try:
@@ -139,6 +159,5 @@ def recognize_gesture():
 #local testing
 
 if __name__ == '__main__':
-    # NOTE: When deploying to Heroku/Cloud Run, you typically use a production WSGI server
-    # like Gunicorn, which calls 'app'. You won't use app.run() directly for production.
+    #deploying to Heroku/Cloud Run, use production WSGI server; Gunicorn calls 'app'; won't use app.run() directly for production.
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
