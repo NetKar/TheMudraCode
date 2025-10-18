@@ -156,8 +156,6 @@ def recognize_gesture():
         "meaning": mudra_details['meaning']
     })
 
-#local testing
-
 if __name__ == '__main__':
-    #deploying to Heroku/Cloud Run, use production WSGI server; Gunicorn calls 'app'; won't use app.run() directly for production.
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    port = int(os.environ.get('PORT', 10000))
+    app.run(debug=False, host='0.0.0.0', port=port)
