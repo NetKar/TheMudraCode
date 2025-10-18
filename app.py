@@ -46,6 +46,11 @@ def initialize():
         print(f"Error loading resources: {e}")
         initLoaded = False
 
+@app.route('/health', methods=['GET'])
+def get_health():
+    #health check for the deployment platform to confirm the app is running
+    return jsonify({"status": "ok", "app_running": True}), 200
+
 @app.route('/status', methods=['GET'])
 def get_status():
     #health status of the API and model readiness
