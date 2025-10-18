@@ -44,7 +44,7 @@ COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/pytho
 COPY . .
 
 #expose port for web service (Standardized to 5000 for Gunicorn/Render compatibility)
-EXPOSE 5000
+EXPOSE 10000
 
 #CMD to run Flask application using Gunicorn (Binding to standard 5000 port)
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "app:app"]
