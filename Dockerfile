@@ -1,5 +1,4 @@
-#build & install dependencies
-#python image with full Linux base makes installing native dependencies easier
+#Use a Python base image
 
 FROM python:3.11-slim-bookworm as builder
 
@@ -17,6 +16,7 @@ RUN apt-get update && \
     libxrender-dev \
     libglib2.0-0 \
     libgl1 \
+    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 #set working directory
@@ -27,7 +27,6 @@ COPY requirements.txt .
 #installing packages, ensuring MediaPipe and opencv-python are included
 #--no-cache-dir reduces image size
 RUN pip install --no-cache-dir -r requirements.txt
-
 
 #final runtime image
 #smaller base image for final runtime to reduce the image size, inherit the installed packages
@@ -44,8 +43,8 @@ COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/pytho
 #copy application source code
 COPY . .
 
-#expose port for web service (Render usually uses 8080 or environment variable PORT)
-EXPOSE 8080
+#expose port for web service (Standardized to 5000 for Gunicorn/Render compatibility)
+EXPOSE 5000
 
-#CMD to run Flask application using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"]
+#CMD to run Flask application using Gunicorn (Binding to standard 5000 port)
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
