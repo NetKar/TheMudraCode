@@ -28,18 +28,22 @@ initLoaded = False
 def initialize():
     global model, hands, classNames, initLoaded
     try:
+        print("STARTING INITIALIZATION", flush=True)
         #initialize MediaPipe
         mpHands = mp.solutions.hands
         hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 
         #load model
+        print("LOADING MODEL", flush=True)
         model = k3.models.load_model(modelPath)
-
+        
+        print("LOADING CLASS NAMES", flush=True)
         #load class names
         with open(namesPath, 'r') as f:
             classNames = f.read().split('\n')
 
         #flag: successful initialization and loading
+        print("LOADED", flush=True)
         initLoaded = True
 
     except Exception as e:
