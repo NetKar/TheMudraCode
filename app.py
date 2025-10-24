@@ -6,7 +6,7 @@ import base64
 from io import BytesIO
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import tf_keras as k3
+from tensorflow import keras as k3
 
 #must install dependencies on deployment server
 
