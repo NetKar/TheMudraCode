@@ -1,0 +1,6 @@
+services:
+  - type: web                  #tells Render you're deploying a web service
+    name: my-api               #name of your service (can be anything)
+    env: docker                #specifies that you're using a Dockerfile
+    plan: free                 #chooses the free plan (you can change this later)
+    dockerCommand: gunicorn --bind 0.0.0.0:10000 app:app  #command to start your app
