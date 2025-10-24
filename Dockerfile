@@ -43,6 +43,9 @@ COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/pytho
 #copy application source code
 COPY . .
 
+#makes gunicorn available in the final image's path
+RUN pip install --no-cache-dir gunicorn
+
 #expose port for web service (Standardized to 5000 for Gunicorn/Render compatibility)
 EXPOSE 10000
 
