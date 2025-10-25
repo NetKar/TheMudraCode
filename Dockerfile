@@ -40,11 +40,10 @@ WORKDIR /app
 #includes installed packages and compiled dependencies
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 
+COPY --from=builder /usr/local/bin /usr/local/bin
+
 #copy application source code
 COPY . .
-
-#makes gunicorn available in the final image's path
-RUN pip install --no-cache-dir gunicorn
 
 #expose port for web service (Standardized to 5000 for Gunicorn/Render compatibility)
 EXPOSE 10000
