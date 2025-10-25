@@ -49,4 +49,4 @@ COPY . .
 EXPOSE 10000
 
 #CMD to run Flask application using Gunicorn (Binding to standard 5000 port)
-CMD gunicorn --bind 0.0.0.0:${PORT:-10000} app:app
+CMD gunicorn --bind 0.0.0.0:${PORT:-10000} app:app
