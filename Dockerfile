@@ -40,7 +40,7 @@ WORKDIR /app
 #includes installed packages and compiled dependencies
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 
-COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 #copy application source code
 COPY . .
