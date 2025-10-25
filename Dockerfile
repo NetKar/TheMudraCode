@@ -36,6 +36,9 @@ FROM python:3.11-slim-bookworm
 #set working directory
 WORKDIR /app
 
+#install libGL.so.1 for OpenCV to work
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
 #copy Python environment from the builder stage
 #includes installed packages and compiled dependencies
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
