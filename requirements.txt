@@ -3,5 +3,5 @@ gunicorn==22.0.0
 flask-cors==4.0.1
 numpy==1.26.4
 opencv-python-headless==4.9.0.80
-mediapipe==0.10.14
+mediapipe==0.9.1.0
 tensorflow-cpu==2.13.0
