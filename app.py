@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from tensorflow import keras as k3
 from threading import Lock
+from keras.layers import TFSMLayer
 
 modelPath = './mp_hand_gesture'
 namesPath = os.path.join(modelPath, 'gesture.names')
@@ -34,7 +35,7 @@ def initialize():
                 min_tracking_confidence=0.7
             )
 
-            model = k3.models.load_model(modelPath)
+            model = TFSMLayer(modelPath, call_endpoint="serving_default")
 
             with open(namesPath, 'r') as f:
                 classNames = [x.strip() for x in f.read().splitlines() if x.strip()]
@@ -139,7 +140,13 @@ def recognize_gesture():
             return jsonify({"error": "Incomplete landmarks"}), 400
 
         inp = np.array(points).flatten().reshape(1, -1)
-        pred = model.predict(inp, verbose=0)
+        #pred = model.predict(inp, verbose=0)
+        pred = model(inp) 
+        # If pred is a dict (some SavedModels return dicts), pick the first value: 
+        if isinstance(pred, dict): 
+            pred = list(pred.values())[0] 
+        # Convert to numpy if needed 
+        pred = np.array(pred)
         classID = np.argmax(pred)
 
         if classID >= len(classNames):
