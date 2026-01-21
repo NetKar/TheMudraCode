@@ -3,26 +3,26 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import base64
+import tensorflow as tf
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from tensorflow import keras as k3
 from threading import Lock
-from keras.layers import TFSMLayer
 
-modelPath = './mp_hand_gesture'
+modelPath = './mp_hand_gesture'   # folder containing saved_model.pb + variables/
 namesPath = os.path.join(modelPath, 'gesture.names')
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 model = None
+infer = None
 hands = None
 classNames = []
 initLoaded = False
 initLock = Lock()
 
 def initialize():
-    global model, hands, classNames, initLoaded
+    global model, infer, hands, classNames, initLoaded
     with initLock:
         if initLoaded:
             return
@@ -35,12 +35,15 @@ def initialize():
                 min_tracking_confidence=0.7
             )
 
-            model = TFSMLayer(modelPath, call_endpoint="serving_default")
+            # Load SavedModel directly
+            model = tf.saved_model.load(modelPath)
+            infer = model.signatures["serving_default"]
 
             with open(namesPath, 'r') as f:
                 classNames = [x.strip() for x in f.read().splitlines() if x.strip()]
 
             initLoaded = True
+            print("Initialization successful", flush=True)
 
         except Exception as e:
             print(f"Initialization Error: {e}", flush=True)
@@ -139,14 +142,12 @@ def recognize_gesture():
         if len(points) != 21:
             return jsonify({"error": "Incomplete landmarks"}), 400
 
-        inp = np.array(points).flatten().reshape(1, -1)
-        #pred = model.predict(inp, verbose=0)
-        pred = model(inp) 
-        # If pred is a dict (some SavedModels return dicts), pick the first value: 
-        if isinstance(pred, dict): 
-            pred = list(pred.values())[0] 
-        # Convert to numpy if needed 
-        pred = np.array(pred)
+        inp = np.array(points).flatten().reshape(1, -1).astype(np.float32)
+
+        # Run inference using SavedModel signature
+        pred = infer(tf.constant(inp))
+        pred = list(pred.values())[0].numpy()
+
         classID = np.argmax(pred)
 
         if classID >= len(classNames):
