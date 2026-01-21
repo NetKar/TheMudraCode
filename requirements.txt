@@ -5,4 +5,3 @@ numpy==1.26.4
 opencv-python-headless==4.9.0.80
 mediapipe==0.10.14
 tensorflow==2.16.1
-keras>=3.0.0
