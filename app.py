@@ -70,7 +70,7 @@ def get_mudra_details(className):
         "meaning": "Not mapped yet"
     }
 
-    if className in ["thumbs up", "thumbs down"]:
+    if className in ["thumbs up", "thumbs down", "call me"]:
         details["name"] = "Shikhara"
         details["shloka"] = (
             "Madana kamuka sthambaecha Nishcaya pitrukarmani\n"
@@ -87,10 +87,96 @@ def get_mudra_details(className):
 
     elif className == "fist":
         details["name"] = "Mushti"
+        details["shloka"] = (
+            "Sthiram kachagraha daartya\n"
+            "Vasthuvadeenam cha dharana\n"
+            "Mallianam yudha bhavae cha\n"
+            "Mushti hastanam yujyathae"
+        )
+        details["meaning"] = (
+            "Steadiness, Grasping one’s hair, Courage\n"
+            "Holding objects\n"
+            "Fighting mood of wrestlers\n"
+            "Thus, these are the uses of Mushti hasta"
+        )
 
     elif className in ["stop", "live long"]:
-        details["name"] = "Patakam"
+        details["name"] = "Pathaka"
+        details["shloka"] = (
+            "Natyarambhae vaarivahae vanai vastu nishedhanae\n"
+            "Kuchasthalae nishayam cha nadyam amaramandalae\n"
+            "Turangae khandanae vayo shayanae gamanodyamae\n"
+            "Pratapae cha prasadae cha chandrikayam ghana tapae\n"
+            "Kavaadapaatanae sapta vibhaktyarthae tharangae\n"
+            "Veedi pravesha bhavepi samatvae cha angaragakae\n"
+            "Aatmarthae shapathae chapae thooshnim bhava nidharshanae\n"
+            "Thaalapatrae cha kheitae cha dravyadi sparshanae thatha\n"
+            "Aashirvadae kriyayam cha nrupa sreshtasya darshanae\n"
+            "Thatra thatreti vachanae sindhyo cha sukruthi kramae\n"
+            "Sambhodhanae purogaepae khadga roopasya dharanae\n"
+            "Masae samvathsarae varsha dinae sammarjanae thatha\n"
+            "Yevam artheshu yujanthae pataka hasta bhavanah"
+        )
+        details["meaning"] = (
+            "Beginning of dance, Rain clouds, Forest, To deny or avoid\n"
+            "Bosom, Night, River, Heaven\n"
+            "Horse, Cutting, Wind, Sleeping, Walking or movement\n"
+            "Showing power, Blessing, Moonlight, Strong sunlight\n"
+            "Opening or closing a door, Denoting the seven grammatical cases, Waves\n"
+            "Entering a street, Equality, Applying sandal paste or massaging the body\n"
+            "Oneself, Taking an oath, Silence or secret indication\n"
+            "Palm leaf (writing a letter), Shield, Touching objects\n"
+            "Blessing action, Presence of a powerful king\n"
+            "Saying ‘this’ or ‘that’, Ocean, Being virtuous or good deeds\n"
+            "Addressing someone, Moving forward, Holding the form of a sword\n"
+            "Month, Year, Rainy day, Sweeping\n"
+            "Thus, Patāka hasta is used in all these meanings"
+        )
 
+    elif className == "okay":
+        details["name"] = "Hamsasya"
+        details["shloka"] = (
+            "Mangalyasutra bandhe cha api upadeshae\n"
+            "Vinishchayae romanche mouktikadou cha\n"
+            "Chitra samlekhanae thatha\n"
+            "Damshathu cha jala bindou cha\n"
+            "Deepa varti prasaranae\n"
+            "Nikashae shodhanae mallikadou cha\n"
+            "Rekha valekhanae malayam vahanae\n"
+            "Soham bhavanae cha roopakae\n"
+            "Naasteeti vachanae cha api nikashanam cha bhavane\n"
+            "Kruta krutyepi hamsasyaha eerito bharatagamae"
+
+        )
+        details["meaning"] = (
+            "Tying the sacred marriage thread, Giving advice\n"
+            "Decision making, Excitement, Pearls and other precious stones\n"
+            "Drawing or sketching\n"
+            "Fly, Drop of water\n"
+            "Spreading the wick of a lamp\n"
+            "Polishing, Searching, Jasmine and other flowers\n"
+            "Drawing a line, Holding a garland\n"
+            "Expressing ‘I am Brahma’, Dramatic representation\n"
+            "Saying ‘No’, Looking at a polished object\n"
+            "Thus are the applications of Hamsasya hasta as explained by Bharata"
+        )
+
+    elif className == "smile":
+        details["name"] = "Chandrakalaa"
+        details["shloka"] = (
+            "Chandray mukhay cha pradayshay tanmatra akara vastuni\n"
+            "Shivasya makutey ganga nadyam cha lagudey pi cha\n"
+            "Esha chandrakala chaiva viniyojana vidhiyatey"
+        )
+        details["meaning"] = (
+            "Moon, Face, Index of measure (distance between thumb and index finger)\n"
+            "Objects of similar crescent-like shape\n"
+            "The crescent moon on Lord Shiva’s head\n"
+            "The river Ganga, A club or weapon\n"
+            "These are the uses of Chandrakala hasta\n"
+            "Thus is the viniyoga as prescribed"
+        )
+    
     return details
 
 @app.route('/recognize_gesture', methods=['POST'])
