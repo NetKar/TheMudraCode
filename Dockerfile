@@ -1,6 +1,6 @@
 #Use a Python base image
 
-FROM python:3.11-slim-bookworm as builder
+FROM python:3.10-slim-bookworm as builder
 
 #environment variables
 ENV PYTHONUNBUFFERED 1
@@ -31,7 +31,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 #final runtime image
 #smaller base image for final runtime to reduce the image size, inherit the installed packages
 
-FROM python:3.11-slim-bookworm
+FROM python:3.10-slim-bookworm
 
 #set working directory
 WORKDIR /app
@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0
 
 #copy Python environment from the builder stage
 #includes installed packages and compiled dependencies
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
